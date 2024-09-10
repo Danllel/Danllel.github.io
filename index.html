@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de IMC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: #2d89ef;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin: 0;
+        }
+
+        #introduccion {
+            padding: 20px;
+            text-align: center;
+        }
+
+        #introduccion p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        form {
+            background-color: white;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        form p {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2d89ef;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        button {
+            background-color: #2d89ef;
+            color: white;
+            padding: 12px 20px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #1e5fa1;
+        }
+
+        #resultado {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #e9f5ff;
+            border-left: 5px solid #2d89ef;
+            border-radius: 4px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        #mejoras {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #e9f5ff;
+            border-bottom: 5px solid #2d89ef;
+            border-radius: 4px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>CALCULADORA DE ÍNDICE DE MASA CORPORAL</h1>
+
+    <div id="introduccion">
+        <p>El Índice de Masa Corporal (IMC) es una herramienta ampliamente utilizada para evaluar si una persona tiene un peso saludable en relación con su altura. Este índice permite identificar posibles riesgos para la salud asociados con el bajo peso, el sobrepeso o la obesidad. En nuestra plataforma, podrás calcular fácilmente tu IMC, entender qué significa y obtener recomendaciones personalizadas para mejorar o mantener tu bienestar.</p>
+    </div>
+
+    <form>
+        <p>Género</p>
+        <input type="radio" id="mujer" name="genero" value="mujer">
+        <label for="mujer">Mujer</label><br>
+        <input type="radio" id="hombre" name="genero" value="hombre">
+        <label for="hombre">Hombre</label><br>
+
+        <label for="peso">Peso (kg):</label>
+        <input type="text" id="peso" placeholder="Ingresa tu peso en kilogramos">
+
+        <label for="estatura">Estatura (cm):</label>
+        <input type="text" id="estatura" placeholder="Ingresa tu estatura en centímetros">
+
+        <button type="button" onclick="calcularIMC()">Calcular IMC</button>
+    </form>
+
+    <div id="resultado">
+        <!-- Aquí se mostrará el resultado del IMC -->
+    </div>
+
+    <div id="mejoras">
+
+        <p>gracias por utilizar la pagina, en el siguiente link 
+        podras ayudarme dejando tu experiencia y sugerencias para mejorar la pagina.</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScDyaJRg0-YlIkbqFq-ix58rHVM-iXylp3OSygnj1fjlKXU-A/viewform?usp=sf_link">Experiencia Y Sugerencias.</a>
+    </div>
+
+    <script>
+        function calcularIMC() {
+            // Obtener los valores ingresados por el usuario
+            let peso = parseFloat(document.getElementById('peso').value);
+            let estaturaCm = parseFloat(document.getElementById('estatura').value);
+            let estaturaM = estaturaCm / 100;  // Convertir la estatura a metros
+
+            // Validar que los campos no estén vacíos
+            if (isNaN(peso) || isNaN(estaturaCm) || peso <= 0 || estaturaCm <= 0) {
+                alert('Por favor ingresa un peso y una estatura válidos.');
+                return;
+            }
+
+            // Calcular el IMC
+            let imc = peso / (estaturaM * estaturaM);
+
+            // Determinar el género seleccionado
+            let genero;
+            if (document.getElementById('mujer').checked) {
+                genero = 'mujer';
+            } else if (document.getElementById('hombre').checked) {
+                genero = 'hombre';
+            } else {
+                alert('Por favor selecciona un género.');
+                return;  // Salir si no se ha seleccionado un género
+            }
+
+            // Mensaje personalizado según el género y el valor del IMC
+            let mensaje;
+            if (genero === 'mujer') {
+                if (imc <= 18.5) {
+                    mensaje = "Eres una mujer con un IMC de " + imc.toFixed(2) + " y te encuentras en un nivel de peso bajo.";
+                } else if (imc > 18.5 && imc <= 24.9) {
+                    mensaje = "Eres una mujer con un IMC de " + imc.toFixed(2) + " y tienes un peso adecuado.";
+                } else if (imc >= 25 && imc <= 29.9) {
+                    mensaje = "Eres una mujer con un IMC de " + imc.toFixed(2) + " y te encuentras en sobrepeso.";
+                } else if (imc >= 30 && imc <= 34.9) {
+                    mensaje = "Eres una mujer con un IMC de " + imc.toFixed(2) + " y tienes obesidad grado I.";
+                } else {
+                    mensaje = "Eres una mujer con un IMC de " + imc.toFixed(2) + " y tienes obesidad grado II o superior.";
+                }
+            } else if (genero === 'hombre') {
+                if (imc <= 18.5) {
+                    mensaje = "Eres un hombre con un IMC de " + imc.toFixed(2) + " y te encuentras en un nivel de peso bajo.";
+                } else if (imc > 18.5 && imc <= 24.9) {
+                    mensaje = "Eres un hombre con un IMC de " + imc.toFixed(2) + " y tienes un peso adecuado.";
+                } else if (imc >= 25 && imc <= 29.9) {
+                    mensaje = "Eres un hombre con un IMC de " + imc.toFixed(2) + " y te encuentras en sobrepeso.";
+                } else if (imc >= 30 && imc <= 34.9) {
+                    mensaje = "Eres un hombre con un IMC de " + imc.toFixed(2) + " y tienes obesidad grado I.";
+                } else {
+                    mensaje = "Eres un hombre con un IMC de " + imc.toFixed(2) + " y tienes obesidad grado II o superior.";
+                }
+            }
+
+            // Mostrar el resultado en la página
+            document.getElementById('resultado').innerHTML = mensaje;
+        }
+    </script>
+    
+
+</body>
+</html>
